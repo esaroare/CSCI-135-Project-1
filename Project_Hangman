@@ -1,0 +1,49 @@
+/*
+Author: your Efti Saroare
+Course: CSCI-135
+Instructor: Brandon Foster
+Assignment: Dictionary using Arrays, Project Task A
+*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+const int g_MAX_WORDS = 1000;
+int g_word_count = 0;
+
+string g_words[g_MAX_WORDS];
+string g_definitions[g_MAX_WORDS];
+string g_pos[g_MAX_WORDS];
+
+/*
+    @param            :   The string with the `filename`
+    @post             :   Reads the words, definitions
+                          pos into the global-arrays
+                          and set the value of `g_word_count`
+                          to the number of words read
+*/
+
+void readWords(string filename)
+{
+
+    ifstream input_file(filename);
+
+    if (input_file.fail())              //Fail Scenario
+    {
+        cout << "File cannot be opened for reading." << endl;
+        return;
+    }
+    
+    string line;
+    
+    if (getline(input_file, line))
+    {
+        while (getline(input_file, line))
+        {
+          
+        }
+    }
+
+}
