@@ -50,7 +50,11 @@ void readWords(string filename)
 
         g_words[g_word_count] = word;
         g_pos[g_word_count] = pos;
-        g_definitions[g_word_count] = definition;
+        if (line == " : ") 
+        {
+            g_definitions[g_word_count] = definition;
+        }
+
         ++g_word_count;
     }
 
@@ -87,7 +91,7 @@ void printDictionary()
 }
 
 
-int main() 
+int main()
 {
     readWords("TextFile1.txt");
     printDictionary();
