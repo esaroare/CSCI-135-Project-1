@@ -4,17 +4,16 @@ Course: CSCI-135
 Instructor: Brandon Foster
 Assignment: Dictionary using Arrays, Project Task A
 */
-
+#include <string.h>
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <sstream>
 #include <string>
-#include <string.h>
-#include <iomanip>
 
 using namespace std;
 
-//   global-variables
+//  global-variables
 const int g_MAX_WORDS = 1000;
 int g_word_count = 0;
 
@@ -30,6 +29,44 @@ string g_pos[g_MAX_WORDS];          //string array of part-of-speech (pos) [1000
                           to the number of words read
 */
 
+void printDictionary()
+{
+    cout << "g_MAX_WORDS: " << g_MAX_WORDS << endl;
+    cout << "\ng_word_count: " << g_word_count << endl;
+    cout << "\ng_words: [";
+
+    for (int i = 0; i <= g_word_count; ++i)
+    {
+        cout << "\"" << g_words[i] << "\"";
+        if (i != g_word_count)
+        {
+            cout << ", ";
+        }
+    }
+    cout << "]\n" << endl;
+
+    cout << "g_pos: [";
+    for (int i = 0; i <= g_word_count; ++i)
+    {
+        cout << "\"" << g_pos[i] << "\"";
+        if (i != g_word_count)
+        {
+            cout << ", ";
+        }
+    }
+    cout << "]\n" << endl;
+    cout << "g_definitions: [";
+    
+    for (int i = 0; i <= g_word_count; ++i) 
+    {
+        cout << "\n     \""<< g_definitions[i] << "\"";
+        if (i != g_word_count)
+        {
+            cout << ", ";
+        }
+    }
+    cout << "]" << endl;
+}
 
 void readWords(string filename)
 {
@@ -41,59 +78,27 @@ void readWords(string filename)
 
     string line;
     getline(file, line);
-    string word, pos, definition;
+    string word, pos, junk, definition;
 
 
-    while (file >> word >> pos >> definition)
+    while (file >> word >> pos >> junk)
     {
-        file.ignore(INT_MAX, '\n');
+        getline(file, definition);
 
         g_words[g_word_count] = word;
         g_pos[g_word_count] = pos;
-        if (line == " : ") 
-        {
-            g_definitions[g_word_count] = definition;
-        }
+
+        g_definitions[g_word_count] = definition;
 
         ++g_word_count;
     }
-
+    printDictionary();
 }
 
-void printDictionary()
-{
-    cout << "g_MAX_WORDS: " << g_MAX_WORDS << endl;
-    cout << "g_word_count: " << g_word_count << endl;
-
-    cout << "g_words: [";
-    for (int i = 0; i <= g_word_count; ++i) {
-        cout << "\"" << g_words[i] << "\"";
-        if (i != g_word_count)
-            cout << ", ";
-    }
-    cout << "]" << endl;
-
-    cout << "g_pos: [";
-    for (int i = 0; i <= g_word_count; ++i) {
-        cout << "\"" << g_pos[i] << "\"";
-        if (i != g_word_count)
-            cout << ", ";
-    }
-    cout << "]" << endl;
-
-    cout << "g_definitions: [";
-    for (int i = 0; i <= g_word_count; ++i) {
-        cout << "\"" << g_definitions[i] << "\"";
-        if (i != g_word_count)
-            cout << ", ";
-    }
-    cout << "]" << endl;
-}
 
 
 int main()
 {
     readWords("TextFile1.txt");
-    printDictionary();
     return 0;
 }
