@@ -5,11 +5,8 @@ Instructor: Brandon Foster
 Assignment: Dictionary using Arrays, Project Task A
 */
 
-#include <string.h>
 #include <iostream>
 #include <fstream>
-#include <iomanip>
-#include <sstream>
 #include <string>
 
 using namespace std;
@@ -31,74 +28,52 @@ string g_pos[g_MAX_WORDS];          //string array of part-of-speech (pos) [1000
 */
 
 
-void readWords(string filename)
-{
+
+void readWords(string filename) {
     ifstream file(filename);
-    if (!file) {
-        cout << "Failed to open file: " << filename << endl;
-        return;
-    }
 
-    string line;
-    getline(file, line);
-    string word, pos, junk, definition;
-    string first, second;
+    if (file.is_open()) {
+        string line;
+        while (getline(file, line)) {
+            size_t firstSpace = line.find(" ");
+            if (firstSpace == string::npos) {
+                // Skip invalid lines
+                continue;
+            }
 
+            string word = line.substr(0, firstSpace);
+            string posAndDef = line.substr(firstSpace + 1); // get pos:definition
 
-    while (file >> word >> pos >> junk >> first)
-    {
-        getline(file, second);
-        definition = first + second;
+            size_t colonPos = posAndDef.find(":");
+            if (colonPos == string::npos) {
+                // Skip invalid lines
+                continue;
+            }
 
-        g_words[g_word_count] = word;
-        g_pos[g_word_count] = pos;
+            string pos = posAndDef.substr(0, colonPos - 1); // exclude trailing space
+            string definition = posAndDef.substr(colonPos + 2); // skip ': ' before definition
 
-        g_definitions[g_word_count] = definition;
+            // Store in global arrays
+            g_words[g_word_count] = word;
+            g_pos[g_word_count] = pos;
+            g_definitions[g_word_count] = definition;
 
-        ++g_word_count;
-    }
-
-    //      PRINTING DICTIONARY
-
-    cout << "g_MAX_WORDS: " << g_MAX_WORDS << endl;
-    cout << "\ng_word_count: " << g_word_count << endl;
-    cout << "\ng_words: [";
-
-    for (int i = 0; i < g_word_count; ++i)
-    {
-        cout << "\"" << g_words[i] << "\"";
-        if (i != g_word_count - 1)
-        {
-            cout << ", ";
+            g_word_count++;
         }
-    }
-    cout << "]\n" << endl;
 
-    cout << "g_pos: [";
-    for (int i = 0; i < g_word_count; ++i)
-    {
-        cout << "\"" << g_pos[i] << "\"";
-        if (i != g_word_count - 1)
-        {
-            cout << ", ";
-        }
+        file.close();
     }
-    cout << "]\n" << endl;
-    cout << "g_definitions: [";
-    for (int i = 0; i < g_word_count; ++i)
-    {
-        cout << "\n     \"" << g_definitions[i] << "\"";
-        if (i != g_word_count - 1)
-        {
-                cout << ", ";
-        }
+    else {
+        cerr << "Could not open file: " << filename << endl;
     }
-    cout << "\n]" << endl;
 }
 
+int main() {
+    readWords("dictionary.txt");
 
-int main()
-{
-    readWords("TextFile1.txt");
+    for (int i = 0; i < g_word_count; i++) {
+        cout << "Word: " << g_words[i] << ", POS: " << g_pos[i] << ", Definition: " << g_definitions[i] << endl;
+    }
+
     return 0;
 }
