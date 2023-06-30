@@ -1,8 +1,9 @@
+
 /*
 Author: your Efti Saroare
 Course: CSCI-135
 Instructor: Brandon Foster
-Assignment: Dictionary using Arrays, Project Task A
+Assignment: Task B
 */
 
 #include <iostream>
@@ -26,9 +27,6 @@ string g_pos[g_MAX_WORDS];          //string array of part-of-speech (pos) [1000
                           and set the value of `g_word_count`
                           to the number of words read
 */
-
-
-
 void readWords(string filename) {
     ifstream file(filename);
 
@@ -66,14 +64,173 @@ void readWords(string filename) {
     else {
         cerr << "Could not open file: " << filename << endl;
     }
-}
-
-int main() {
-    readWords("dictionary.txt");
+    cout << "g_MAX_WORDS: " << g_MAX_WORDS << "\n\ng_word_count: " << g_word_count << "\n" << "\ng_words: ";
+    cout << "[";
 
     for (int i = 0; i < g_word_count; i++) {
-        cout << "Word: " << g_words[i] << ", POS: " << g_pos[i] << ", Definition: " << g_definitions[i] << endl;
+        cout << " \"" << g_words[i] << "\" ";
     }
+    cout << "]\n";
+
+    cout << "\ng_pos: ";
+    cout << "[";
+    for (int i = 0; i < g_word_count; i++) {
+        cout << " \"" << g_pos[i] << "\" ";
+    }
+    cout << "]\n";
+
+    cout << "\ng_definitions: [\n";
+    for (int i = 0; i < g_word_count; i++) {
+        cout << "    \"" << g_definitions[i] << "\"\n";
+    }
+    cout << "]";
+}
+
+/*
+    @param            :   The string with a query word
+    @return           :   Integer index of the word in
+                          `g_words` global-array. Returns
+                          -1 if the word is not found
+    @post             :   Find the index of given `word`
+                          in the `g_words` array. Return -1
+                          if word is not in the array
+*/
+int getIndex(string word)
+{
+    int index = 0;
+    bool word_found = false;
+
+    while (index < g_word_count)
+    {
+        if (g_words[index] == word)
+        {
+            word_found = true;
+            break;
+        }
+        index++;
+    }
+    if (word_found)
+    {
+        return index;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+/*
+    @param            :   The string with a query word
+    @return           :   Return the string definition of
+                          the word from  `g_definitions`
+                          global-array. Return "NOT_FOUND" if
+                          word doesn't exist in the dictionary
+    @post             :   Find the definition of the given `word`
+                          Return "NOT_FOUND" otherwise
+*/
+string getDefinition(string word)
+{
+    int i = 0;
+    bool def_found = false;
+
+    while (i < g_word_count)
+    {
+        if (g_words[i] == word)
+        {
+            def_found = true;
+            break;
+        }
+        i++;
+    }
+
+    if (def_found)
+    {
+        return g_definitions[getIndex(word)];
+    }
+    else
+    {
+        return "NOT_FOUND";
+    }
+}
+
+/*
+    @param            :   The string with a query word
+    @return           :   Return the string part-of-speech(pos)
+                          from the `g_pos` global-array. Return
+                          "NOT_FOUND" if the word doesn't exist
+                          in the dictionary.
+    @post             :   Find the pos of the given `word`
+                          Return "NOT_FOUND" otherwise
+*/
+string getPOS(string word)
+{
+    int i = 0;
+    bool pos_found = false;
+
+    while (i < g_word_count)
+    {
+        if (g_words[i] == word)
+        {
+            pos_found = true;
+            break;
+        }
+        i++;
+    }
+
+    if (pos_found)
+    {
+        return g_pos[getIndex(word)];
+    }
+    else
+    {
+        return "NOT_FOUND";
+    }
+}
+
+/*
+    @param            :   The string prefix of a word (the prefix
+                          can be of any length)
+    @return           :   Integer number of words found that starts
+                          with the given `prefix`
+    @post             :   Count the words that start with the given
+                          `prefix`
+*/
+
+int countPrefix(string prefix)
+{
+    int count = 0;
+
+    for (int i = 0; i < g_word_count; i++) {
+        if (g_words[i].find(prefix) == 0) {
+            // The word starts with the given prefix
+            count++;
+        }
+    }
+
+    return count;
+}
+
+int main()
+{
+
+    //      PRINTING DICTIONARY
+    readWords("TextFile1.txt");
+
+    //      GETTING INDEX
+
+    cout << "\n\nEnter Word: ";
+    string word;
+    cin >> word;
+
+    //      GETTING DEFINITION
+    cout << "\nDefinition: " << getDefinition(word) << endl;
+
+    //      GETTING POS
+    cout << "\nPOS: " << getPOS(word) << endl;
+
+    string prefix = "pre";
+    int prefixCount = countPrefix(prefix);
+    cout << "Number of words starting with '" << prefix << "': " << prefixCount << endl;
 
     return 0;
 }
