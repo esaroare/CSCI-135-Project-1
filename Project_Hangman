@@ -228,7 +228,7 @@ int main()
 
     string prefix = "pre";
     int prefixCount = countPrefix(prefix);
-    cout << "Number of words starting with '" << prefix << "': " << prefixCount << endl;
+    cout << "\nNumber of words starting with '" << prefix << "': " << prefixCount << endl;
 
     return 0;
 }
