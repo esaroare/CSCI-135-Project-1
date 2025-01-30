@@ -1,1 +1,1 @@
-Completion of all CSCI 135 projects for the Summer 2023 semester at Hunter College.
+Completion of CSCI 135 project (Hangman) for the Summer 2023 semester at Hunter College.
